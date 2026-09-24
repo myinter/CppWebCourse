@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-mode="self">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C/C++ 程序设计教程</title>
+<meta name="description" content="C/C++ 程序设计教程：数据类型、运算符、控制流、函数、数组、指针、结构体与 Modern C++">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/deck.css">
+<link rel="stylesheet" href="assets/css/code.css">
+<link rel="stylesheet" href="assets/css/anim.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+
+<!-- 首帧前套用已保存的主题/模式，避免深色页闪一下白 -->
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('pyt.theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    var m = localStorage.getItem('pyt.mode') || 'self';
+    document.documentElement.setAttribute('data-mode', m);
+    if (m === 'teach') document.documentElement.style.setProperty('--scale-mode', '1.14');
+  } catch (e) {}
+})();
+</script>
+</head>
+<body>
+
+<main class="deck" id="deck" role="main" aria-label="课程内容"></main>
+
+<div class="loading" id="loading">
+  <div class="loading-inner">
+    <div class="spinner"></div>
+    <div class="loading-text" id="loading-text">正在载入本章内容…</div>
+  </div>
+</div>
+
+<!-- 经典脚本（非 ES module）：直接双击打开 HTML 也能正常看内容 -->
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/code.js"></script>
+<script src="assets/js/memory.js"></script>
+<script src="assets/js/compiler.js"></script>
+<script src="assets/js/render.js"></script>
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/mode.js"></script>
+<script src="assets/js/deck.js"></script>
+<script src="assets/data/manifest.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

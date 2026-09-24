@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark" data-mode="self">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>C/C++ 程序设计教程</title>
+<meta name="description" content="一套带内存可视化的 C/C++ 入门教程，从数据类型到 Modern C++，共十章。">
+
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/deck.css">
+<link rel="stylesheet" href="assets/css/code.css">
+<link rel="stylesheet" href="assets/css/anim.css">
+<link rel="stylesheet" href="assets/css/responsive.css">
+<link rel="stylesheet" href="assets/css/home.css">
+
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('pyt.theme');
+    if (!t) t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
+</head>
+<body class="home">
+
+<header class="home-top">
+  <div class="home-brand">
+    <span class="home-logo" id="brand-icon"></span>
+    <span>C/C++ 程序设计教程</span>
+  </div>
+  <div class="home-top-actions">
+    <button class="icon-btn" data-act="theme" type="button" aria-label="切换主题"></button>
+  </div>
+</header>
+
+<main class="home-main">
+
+  <section class="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-badge">十章 · 从数据类型到 Modern C++</div>
+    <h1 class="hero-title">从内存出发，理解 C++</h1>
+    <p class="hero-sub">
+      一套完整的 C/C++ 入门课件。所有程序输出都是真实编译运行的结果，
+      指针、内存、参数传递这些最难讲清的地方，配了可以逐步播放的内存图。
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-ce hero-cta" id="cta-start" href="chapter.html?ch=0">
+        <span>从前言开始</span>
+      </a>
+      <button class="btn" id="cta-continue" type="button" hidden>
+        <span>继续上次进度</span>
+      </button>
+    </div>
+    <div class="hero-meta" id="hero-meta"></div>
+  </section>
+
+  <section class="chapters" aria-label="章节目录">
+    <h2 class="sr-only">章节目录</h2>
+    <div class="chapter-grid" id="chapter-grid"></div>
+  </section>
+
+  <section class="home-foot">
+    <div class="foot-card">
+      <h3>怎么用</h3>
+      <ul class="foot-list">
+        <li><kbd>←</kbd> <kbd>→</kbd> 翻页，<kbd>空格</kbd> 下一页</li>
+        <li><kbd>O</kbd> 本页总览，<kbd>S</kbd> 讲师讲解</li>
+        <li><kbd>F</kbd> 全屏，适合课堂投影</li>
+        <li>代码可一键复制，或送到 Compiler Explorer 动手改</li>
+      </ul>
+    </div>
+    <div class="foot-card">
+      <h3>关于这套教程</h3>
+      <p>
+        课程内容来自九份课件。整理成网页时做了三件事：
+        把讲师讲稿完整保留为「讲师讲解」；
+        给每一个程序配上真实编译运行得到的输出；
+        为指针与内存这类抽象概念配上可逐步播放的内存图。
+      </p>
+      <p class="dim" style="margin-top:var(--sp-3);font-size:var(--fs-small)">
+        浏览器里没有 C++ 编译器，因此代码在页面内不执行 ——
+        输出均由 clang++ 预先编译运行得到，想自己动手可跳转 Compiler Explorer。
+      </p>
+    </div>
+  </section>
+
+  <div id="file-warning"></div>
+</main>
+
+<script src="assets/js/icons.js"></script>
+<script src="assets/js/code.js"></script>
+<script src="assets/js/theme.js"></script>
+<script src="assets/js/mode.js"></script>
+<script src="assets/data/manifest.js"></script>
+<script src="assets/js/home.js"></script>
+</body>
+</html>

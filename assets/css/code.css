@@ -1,0 +1,430 @@
+/* ============================================================
+   代码块 / C++ 语法高亮 / 程序输出 / 内存可视化
+   高亮配色由 tokens.css 的 --c-* 提供
+   ============================================================ */
+
+/* ---------- 代码主体 ---------- */
+.code-body {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: calc(var(--fs-code) * var(--scale-mode));
+  line-height: 1.7;
+  overflow: auto;
+  contain: content;
+}
+
+.code-gutter {
+  flex-shrink: 0;
+  padding: var(--sp-4) var(--sp-3) var(--sp-4) var(--sp-4);
+  text-align: right;
+  color: var(--text-muted);
+  user-select: none;
+  background: var(--bg-code);
+  border-right: 1px solid var(--border-soft);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+.code-gutter span { display: block; }
+.code-gutter span.is-hot {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.code-area {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.code-pre {
+  flex: 1;
+  margin: 0;
+  padding: var(--sp-4);
+  min-width: max-content;
+  white-space: pre;
+  tab-size: 4;
+  color: var(--c-text);
+  background: transparent;
+}
+
+.code-line { display: block; min-height: 1.7em; }
+.code-line.is-hot {
+  background: var(--accent-soft);
+  box-shadow: inset 3px 0 0 var(--accent);
+  border-radius: 3px;
+}
+
+/* 横向可滚动时的右侧渐隐提示（由 code.markOverflow 实测后加类） */
+.code-area.is-overflowing::after {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 36px;
+  background: linear-gradient(to right, transparent, var(--bg-code) 88%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ---------- C++ 语法高亮 ---------- */
+.tok-kw        { color: var(--c-keyword); font-weight: 600; }  /* if for return template */
+.tok-type      { color: var(--c-type); }                       /* int double std::vector */
+.tok-namespace { color: var(--c-namespace); }                  /* std */
+.tok-func      { color: var(--c-func); }                       /* main printf obj.method */
+.tok-macro     { color: var(--c-macro); font-weight: 600; }    /* #include #define */
+.tok-str       { color: var(--c-string); }
+.tok-char      { color: var(--c-char); }
+.tok-num       { color: var(--c-number); }
+.tok-comment   { color: var(--c-comment); font-style: italic; }
+.tok-op        { color: var(--c-op); }
+.tok-punct     { color: var(--c-text); opacity: 0.75; }
+.tok-plain     { color: var(--c-text); }
+/* 汇编（前言里"三行 C++ 变成什么"那一页）*/
+.tok-reg       { color: var(--c-reg); }                        /* %eax %rbp */
+.tok-label     { color: var(--c-func); }                       /* main: */
+.tok-ws        { color: inherit; }
+
+/* ---------- 代码面板 ---------- */
+.code-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--bg-code);
+  overflow: hidden;
+  min-width: 0;
+}
+.code-panel-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--bg-inset);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border-hi); }
+.code-dot:nth-child(1) { background: #ff5f56; }
+.code-dot:nth-child(2) { background: #ffbd2e; }
+.code-dot:nth-child(3) { background: #27c93f; }
+.code-file {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+.code-panel-actions { margin-left: auto; display: flex; gap: var(--sp-2); flex-wrap: wrap; }
+
+/* ---------- 按钮 ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all var(--dur-fast) var(--ease-soft);
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--border-hi);
+  background: var(--bg-card-hi);
+  text-decoration: none;
+}
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* 「在 Compiler Explorer 打开」——外链，视觉上区别于普通按钮 */
+.btn-ce {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  background: var(--accent-soft);
+}
+.btn-ce:hover {
+  color: var(--text-invert);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.btn-copy.is-done {
+  color: var(--ok);
+  border-color: color-mix(in srgb, var(--ok) 45%, var(--border));
+}
+
+/* ---------- 程序输出（静态展示，非实时运行） ---------- */
+.term {
+  border-top: 1px solid var(--border);
+  background: var(--term-bg);
+  font-family: var(--font-mono);
+  font-size: calc(var(--fs-code) * 0.95 * var(--scale-mode));
+  line-height: 1.65;
+  max-height: 340px;
+  overflow-y: auto;
+}
+.term-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border-soft);
+  position: sticky;
+  top: 0;
+  background: var(--term-bg);
+  z-index: 1;
+}
+/* 「真实编译输出」徽标：明确这是实测结果，不是编造的 */
+.term-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.05rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--ok) 40%, var(--border));
+  border-radius: var(--r-sm);
+  color: var(--ok);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+}
+.term-body {
+  padding: var(--sp-3) var(--sp-4);
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--term-text);
+  min-height: 1.65em;
+}
+.term-line { display: block; min-height: 1.65em; }
+.term-line.is-stderr { color: var(--c-error); }
+.term-line.is-system { color: var(--text-dim); font-style: italic; }
+.term-empty { color: var(--text-dim); font-style: italic; }
+
+/* ============================================================
+   内存可视化
+   ============================================================ */
+.mem-player {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  padding: var(--sp-3);
+  min-width: 0;
+}
+
+.mem-stage {
+  overflow-x: auto;
+  border-radius: var(--r-md);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+}
+.mem-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: min(42vh, 360px);
+  min-width: 380px;
+}
+
+/* ---- 区域底板 ---- */
+.mem-region rect {
+  fill: var(--mem-stack);
+  stroke: var(--mem-stack-line);
+  stroke-width: 1;
+}
+.mem-region.mem-heap rect { fill: var(--mem-heap); stroke: var(--mem-heap-line); }
+.mem-region.mem-global rect { fill: var(--mem-global); stroke: var(--mem-stack-line); }
+.mem-region.mem-code rect { fill: var(--mem-code); stroke: var(--mem-stack-line); }
+
+.mem-region-label {
+  fill: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+/* ---- 变量盒子 ---- */
+.mem-cell rect {
+  fill: var(--bg-card);
+  stroke: var(--border-hi);
+  stroke-width: 1.2;
+  transition: all var(--dur-base) var(--ease-out);
+}
+.mem-cell-name {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.mem-cell-value {
+  fill: var(--text);
+  font-family: var(--font-mono);
+  font-size: 17px;
+  font-weight: 700;
+}
+/* 地址写全（0x7ffd9c4a2ba0），不省略中间位 —— 省略后的
+   「0x7ffd…a0」看着像没写完，读者还得自己脑补高位是什么 */
+.mem-cell-addr {
+  fill: var(--mem-addr);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* 刚变化的变量：高亮描边 + 辉光，让"这一步改了什么"一眼可见 */
+.mem-cell.is-changed rect {
+  stroke: var(--accent);
+  stroke-width: 2;
+  filter: drop-shadow(0 0 8px var(--accent-glow));
+}
+.mem-cell.is-changed .mem-cell-value { fill: var(--accent); }
+
+/* 野指针 / 悬垂指针 */
+.mem-cell.is-dangling rect {
+  stroke: var(--danger);
+  stroke-width: 2;
+  stroke-dasharray: 5 3;
+}
+.mem-cell.is-dangling .mem-cell-value { fill: var(--danger); }
+.mem-cell.is-dangling::after { content: ""; }
+
+/* 已释放的内存 */
+.mem-cell.is-freed rect {
+  fill: var(--bg-inset);
+  stroke: var(--border);
+  stroke-dasharray: 3 3;
+  opacity: 0.6;
+}
+.mem-cell.is-freed .mem-cell-value { fill: var(--text-dim); text-decoration: line-through; }
+
+/* ---- 指针箭头 ---- */
+.mem-arrow-line {
+  fill: none;
+  stroke: var(--mem-arrow);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.mem-arrow-head { fill: var(--mem-arrow); }
+.mem-arrow-label {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* 指向已释放内存的箭头用红色虚线 */
+.mem-arrow.is-bad .mem-arrow-line { stroke: var(--danger); stroke-dasharray: 5 3; }
+.mem-arrow.is-bad .mem-arrow-head { fill: var(--danger); }
+
+/* ---- 说明与步进条 ---- */
+.mem-caption {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.7;
+  min-height: 2.6em;
+  padding: 0 var(--sp-1);
+}
+.mem-caption.is-empty { min-height: 0; }
+
+.mem-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border-soft);
+  flex-wrap: wrap;
+}
+.trace-step {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  min-width: 6ch;
+  text-align: center;
+}
+.trace-range {
+  flex: 1;
+  min-width: 100px;
+  accent-color: var(--accent);
+}
+
+/* 图标按钮（播放/上一步/下一步） */
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-md);
+  color: var(--text-muted);
+  transition: all var(--dur-fast) var(--ease-soft);
+}
+.icon-btn:hover { color: var(--text); background: var(--bg-card-hi); }
+.icon-btn svg { width: 16px; height: 16px; }
+
+/* ============================================================
+   危险提示条：C++ 教学里到处是陷阱，需要统一的警示语言
+   ============================================================ */
+.trap {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid color-mix(in srgb, var(--danger) 40%, var(--border));
+  border-radius: var(--r-md);
+  background: var(--danger-soft);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.trap svg { width: 18px; height: 18px; color: var(--danger); flex-shrink: 0; margin-top: 0.2em; }
+.trap strong { color: var(--text); }
+.trap code {
+  font-size: 0.92em;
+  padding: 0.1em 0.4em;
+  border-radius: var(--r-sm);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+}
+
+/* 一般说明卡 */
+.note-card {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-elev);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.note-card svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; margin-top: 0.2em; }
+.note-card strong { color: var(--text); }
+.note-card code {
+  font-size: 0.92em;
+  padding: 0.1em 0.4em;
+  border-radius: var(--r-sm);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-soft);
+}
+
+/* 运行环境说明（解释为什么不能在这里运行） */
+.env-note {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border: 1px solid color-mix(in srgb, var(--warn) 35%, var(--border));
+  border-radius: var(--r-md);
+  background: var(--warn-soft);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.env-note svg { width: 18px; height: 18px; color: var(--warn); flex-shrink: 0; margin-top: 0.2em; }
+.env-note strong { color: var(--text); }

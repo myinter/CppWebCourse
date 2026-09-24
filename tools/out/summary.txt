@@ -1,0 +1,14 @@
+preface  课程介绍              17 页  代码块  0  备注 17/17
+ch1      数据类型与变量常量         20 页  代码块  1  备注 20/20
+ch2      运算符与表达式           26 页  代码块  4  备注 25/26
+          缺陷: fullwidth_punct×2, smart_quote×1
+ch3      控制流               25 页  代码块  9  备注 25/25
+          缺陷: fullwidth_punct×5, smart_quote×1
+ch4      函数                26 页  代码块  4  备注 26/26
+          缺陷: fullwidth_punct×1
+ch5      数组与字符串            25 页  代码块  9  备注 23/25
+          缺陷: fullwidth_punct×5
+ch6      指针与函数             25 页  代码块  4  备注 25/25
+          缺陷: fullwidth_punct×2
+ch7      结构体与共用体以及枚举       15 页  代码块 10  备注 14/15
+          缺陷: fullwidth_punct×2
