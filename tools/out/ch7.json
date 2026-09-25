@@ -1,0 +1,1598 @@
+{
+  "chapter": 7,
+  "name": "结构体与共用体以及枚举",
+  "subtitle": "struct / union / enum / typedef",
+  "source": "C_C++程序设计教程-第7章：结构体与共用体以及枚举.pptx",
+  "slide_count": 15,
+  "slides": [
+    {
+      "n": 1,
+      "title_guess": "C/C++ 程序设计教程",
+      "notes": "大家好，欢迎回到C/C++编程教程。今天我们来学习如何创建自己的数据类型。通过结构体、枚举和联合体，我们可以像搭积木一样，将简单的数据类型组合成更复杂、更贴近现实世界的对象。",
+      "blocks": [
+        {
+          "text": "C/C++ 程序设计教程",
+          "lines": [
+            "C/C++ 程序设计教程"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 2.1,
+            "w": 13.33,
+            "h": 0.93
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "第7章：结构体与自定义类型",
+          "lines": [
+            "第7章：结构体与自定义类型"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 3.4,
+            "w": 13.33,
+            "h": 0.69
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "从零件搭建起复杂的对象",
+          "lines": [
+            "从零件搭建起复杂的对象"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 4.51,
+            "w": 13.33,
+            "h": 0.42
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 2,
+      "title_guess": "本章内容概览",
+      "notes": "",
+      "blocks": [
+        {
+          "text": "本章内容概览",
+          "lines": [
+            "本章内容概览"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 5.56,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "结构体 (struct)",
+          "lines": [
+            "结构体 (struct)"
+          ],
+          "pos": {
+            "x": 2.22,
+            "y": 2.26,
+            "w": 1.94,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "数组与 typedef",
+          "lines": [
+            "数组与 typedef"
+          ],
+          "pos": {
+            "x": 6.25,
+            "y": 2.26,
+            "w": 1.94,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "枚举类型 (enum)",
+          "lines": [
+            "枚举类型 (enum)"
+          ],
+          "pos": {
+            "x": 10.28,
+            "y": 2.26,
+            "w": 1.94,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "聚合多个不同类型的字段，构建复杂数据模型的基础。",
+          "lines": [
+            "聚合多个不同类型的字段，构建复杂数据模型的基础。"
+          ],
+          "pos": {
+            "x": 2.22,
+            "y": 2.82,
+            "w": 1.94,
+            "h": 0.75
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "利用数组批量处理结构体，并使用别名简化复杂类型声明。",
+          "lines": [
+            "利用数组批量处理结构体，并使用别名简化复杂类型声明。"
+          ],
+          "pos": {
+            "x": 6.25,
+            "y": 2.82,
+            "w": 1.94,
+            "h": 0.75
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "定义具有名字的整型常量集合，增强代码的可读性与可维护性。",
+          "lines": [
+            "定义具有名字的整型常量集合，增强代码的可读性与可维护性。"
+          ],
+          "pos": {
+            "x": 10.28,
+            "y": 2.82,
+            "w": 1.94,
+            "h": 0.75
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 3,
+      "title_guess": "PART 01",
+      "notes": "首先，我们来学习最常用的自定义类型——结构体。结构体的核心思想就是“聚合”，它允许我们将逻辑上相关的、不同类型的数据捆绑在一起，形成一个新的整体。",
+      "blocks": [
+        {
+          "text": "PART 01",
+          "lines": [
+            "PART 01"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 2.25,
+            "w": 13.33,
+            "h": 1.19
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "结构体 (struct)",
+          "lines": [
+            "结构体 (struct)"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 3.78,
+            "w": 13.33,
+            "h": 0.78
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "聚合多个字段",
+          "lines": [
+            "聚合多个字段"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 4.98,
+            "w": 13.33,
+            "h": 0.46
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 4,
+      "title_guess": "为什么需要结构体？",
+      "notes": "想象一下，如果我们用独立的变量来描述一个学生的姓名、学号、年龄和成绩，这些变量之间没有任何联系，管理起来非常混乱。结构体就是为了解决这个问题而生的。它就像一个数据打包器，把这些相关信息组合成一个整体，让数据管理变得井然有序。",
+      "blocks": [
+        {
+          "text": "为什么需要结构体？",
+          "lines": [
+            "为什么需要结构体？"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 5.56,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "❌ 痛点：分散的独立变量",
+          "lines": [
+            "❌ 痛点：分散的独立变量"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 1.96,
+            "w": 5.28,
+            "h": 0.39
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "若用零散变量描述对象，数据间缺乏关联，不仅逻辑管理困难，在函数间传递参数时也极易出错。",
+          "lines": [
+            "若用零散变量描述对象，数据间缺乏关联，不仅逻辑管理困难，在函数间传递参数时也极易出错。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 2.53,
+            "w": 5.28,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "char name[20] = \"张三\"; \nint id = 2026001;\nint age = 18; \nfloat score = 92.5;",
+          "lines": [
+            "char name[20] = \"张三\"; ",
+            "int id = 2026001;\nint age = 18; ",
+            "float score = 92.5;"
+          ],
+          "pos": {
+            "x": 1.25,
+            "y": 3.13,
+            "w": 5.0,
+            "h": 0.83
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "✅ 方案：结构化数据封装",
+          "lines": [
+            "✅ 方案：结构化数据封装"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 4.47,
+            "w": 5.28,
+            "h": 0.39
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "使用结构体定义新类型，将同一对象的属性“打包”成整体，实现数据的集中管理与高效传递。",
+          "lines": [
+            "使用结构体定义新类型，将同一对象的属性“打包”成整体，实现数据的集中管理与高效传递。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 4.88,
+            "w": 5.28,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "struct Student { \nchar name[20]; \nint id;\nint age; \nfloat score; \n};\nstruct Student s1 = {\"张三\", 2026001, 18, 92.5};",
+          "lines": [
+            "struct Student { ",
+            "char name[20]; ",
+            "int id;",
+            "int age; ",
+            "float score; ",
+            "};\nstruct Student s1 = {\"张三\", 2026001, 18, 92.5};"
+          ],
+          "pos": {
+            "x": 1.25,
+            "y": 5.46,
+            "w": 5.0,
+            "h": 1.44
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "char name[20] = \"张三\"; \nint id = 2026001;\nint age = 18; \nfloat score = 92.5;",
+          "lines": [
+            "char name[20] = \"张三\"; ",
+            "int id = 2026001;\nint age = 18; ",
+            "float score = 92.5;"
+          ],
+          "pos": {
+            "x": 1.25,
+            "y": 3.13,
+            "w": 5.0,
+            "h": 0.83
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "struct Student { \nchar name[20]; \nint id;\nint age; \nfloat score; \n};\nstruct Student s1 = {\"张三\", 2026001, 18, 92.5};",
+          "lines": [
+            "struct Student { ",
+            "char name[20]; ",
+            "int id;",
+            "int age; ",
+            "float score; ",
+            "};\nstruct Student s1 = {\"张三\", 2026001, 18, 92.5};"
+          ],
+          "pos": {
+            "x": 1.25,
+            "y": 5.46,
+            "w": 5.0,
+            "h": 1.44
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        }
+      ]
+    },
+    {
+      "n": 5,
+      "title_guess": "结构体的定义与初始化",
+      "notes": "定义结构体就像创建一个新的数据类型。我们用struct关键字，然后给它起个名字，并在花括号里列出它包含的成员。定义好类型后，我们就可以用它来创建变量，并使用大括号进行初始化。我们可以按顺序初始化，也可以指定成员名来初始化，非常灵活。",
+      "blocks": [
+        {
+          "text": "结构体的定义与初始化",
+          "lines": [
+            "结构体的定义与初始化"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 11.67,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "结构体类型定义",
+          "lines": [
+            "结构体类型定义"
+          ],
+          "pos": {
+            "x": 1.74,
+            "y": 2.05,
+            "w": 4.17,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "变量创建与初始化",
+          "lines": [
+            "变量创建与初始化"
+          ],
+          "pos": {
+            "x": 7.71,
+            "y": 2.05,
+            "w": 4.17,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "使用struct关键字封装多个相关联的基本数据类型，构建自定义的复合数据结构。",
+          "lines": [
+            "使用struct关键字封装多个相关联的基本数据类型，构建自定义的复合数据结构。"
+          ],
+          "pos": {
+            "x": 1.32,
+            "y": 3.16,
+            "w": 4.72,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "支持按成员顺序赋值，或在C99标准中使用.成员名进行指定初始化，未赋值成员默认为0。",
+          "lines": [
+            "支持按成员顺序赋值，或在C99标准中使用.成员名进行指定初始化，未赋值成员默认为0。"
+          ],
+          "pos": {
+            "x": 7.29,
+            "y": 3.16,
+            "w": 4.72,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "// 定义一个Point类型\nstruct Point {\nint x; // 横坐标成员\nint y; // 纵坐标成员\n};",
+          "lines": [
+            "// 定义一个Point类型\nstruct Point {\nint x; // 横坐标成员\nint y; // 纵坐标成员\n};"
+          ],
+          "pos": {
+            "x": 1.53,
+            "y": 4.21,
+            "w": 4.31,
+            "h": 1.17
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "struct Point p1 = {10, 20}; // 顺序初始化\nstruct Point p2 = {.y = 30}; // 指定y，x默认为0\nstruct Point p3 = {.y = 50, .x = 40}; // 乱序指定",
+          "lines": [
+            "struct Point p1 = {10, 20}; // 顺序初始化\nstruct Point p2 = {.y = 30}; // 指定y，x默认为0\nstruct Point p3 = {.y = 50, .x = 40}; // 乱序指定"
+          ],
+          "pos": {
+            "x": 7.5,
+            "y": 4.52,
+            "w": 4.31,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": [
+            "fullwidth_punct"
+          ]
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "// 定义一个Point类型\nstruct Point {\nint x; // 横坐标成员\nint y; // 纵坐标成员\n};",
+          "lines": [
+            "// 定义一个Point类型\nstruct Point {\nint x; // 横坐标成员\nint y; // 纵坐标成员\n};"
+          ],
+          "pos": {
+            "x": 1.53,
+            "y": 4.21,
+            "w": 4.31,
+            "h": 1.17
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "struct Point p1 = {10, 20}; // 顺序初始化\nstruct Point p2 = {.y = 30}; // 指定y，x默认为0\nstruct Point p3 = {.y = 50, .x = 40}; // 乱序指定",
+          "lines": [
+            "struct Point p1 = {10, 20}; // 顺序初始化\nstruct Point p2 = {.y = 30}; // 指定y，x默认为0\nstruct Point p3 = {.y = 50, .x = 40}; // 乱序指定"
+          ],
+          "pos": {
+            "x": 7.5,
+            "y": 4.52,
+            "w": 4.31,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": [
+            "fullwidth_punct"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 6,
+      "title_guess": "结构体成员的访问",
+      "notes": "创建了结构体变量后，我们如何访问它内部的成员呢？答案是使用点操作符。\n如左侧所示，通过“变量名.成员名”的方式，我们可以轻松地读取或修改结构体内部的数据。\n右侧的代码示例直观地展示了这一点：我们定义了一个Point结构体，然后在主函数中创建了变量p。通过p.x和p.y，我们既可以打印出它的初始值，也可以对其进行重新赋值。",
+      "blocks": [
+        {
+          "text": "结构体成员的访问",
+          "lines": [
+            "结构体成员的访问"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 5.56,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "💡 核心概念解析",
+          "lines": [
+            "💡 核心概念解析"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 2.02,
+            "w": 4.72,
+            "h": 0.4
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "📝 代码实战演示",
+          "lines": [
+            "📝 代码实战演示"
+          ],
+          "pos": {
+            "x": 6.67,
+            "y": 2.02,
+            "w": 5.56,
+            "h": 0.4
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "在 C 语言中，要访问结构体变量内部的具体成员，我们需要使用专用的点操作符 (.)。这是访问结构体成员最基础、也是最常用的方式。",
+          "lines": [
+            "在 C 语言中，要访问结构体变量内部的具体成员，我们需要使用专用的点操作符 (.)。这是访问结构体成员最基础、也是最常用的方式。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 2.69,
+            "w": 4.72,
+            "h": 0.88
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "#include<stdio.h>\nstruct Point{ int x; int y; };\nint main() {\nstruct Point p = {10, 20};\n// 1. 访问并读取成员值\nprintf(\"p.x = %d\\n\", p.x);\n// 2. 修改成员的值\np.x = 100; p.y = 200;\nreturn0; \n}",
+          "lines": [
+            "#include<stdio.h>",
+            "struct Point{ int x; int y; };",
+            "int main() {",
+            "struct Point p = {10, 20};",
+            "// 1. 访问并读取成员值",
+            "printf(\"p.x = %d\\n\", p.x);",
+            "// 2. 修改成员的值",
+            "p.x = 100; p.y = 200;",
+            "return0; ",
+            "}"
+          ],
+          "pos": {
+            "x": 6.88,
+            "y": 3.36,
+            "w": 5.14,
+            "h": 2.03
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "标准语法格式：",
+          "lines": [
+            "标准语法格式："
+          ],
+          "pos": {
+            "x": 1.32,
+            "y": 4.06,
+            "w": 4.31,
+            "h": 0.28
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "结构体变量名 . 成员名",
+          "lines": [
+            "结构体变量名 . 成员名"
+          ],
+          "pos": {
+            "x": 1.32,
+            "y": 4.58,
+            "w": 4.31,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "通过此语法，我们可以非常灵活地对结构体成员进行“读取”操作或“赋值修改”操作，实现对数据的完全掌控。",
+          "lines": [
+            "通过此语法，我们可以非常灵活地对结构体成员进行“读取”操作或“赋值修改”操作，实现对数据的完全掌控。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 5.58,
+            "w": 4.72,
+            "h": 0.51
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "#include<stdio.h>\nstruct Point{ int x; int y; };\nint main() {\nstruct Point p = {10, 20};\n// 1. 访问并读取成员值\nprintf(\"p.x = %d\\n\", p.x);\n// 2. 修改成员的值\np.x = 100; p.y = 200;\nreturn0; \n}",
+          "lines": [
+            "#include<stdio.h>",
+            "struct Point{ int x; int y; };",
+            "int main() {",
+            "struct Point p = {10, 20};",
+            "// 1. 访问并读取成员值",
+            "printf(\"p.x = %d\\n\", p.x);",
+            "// 2. 修改成员的值",
+            "p.x = 100; p.y = 200;",
+            "return0; ",
+            "}"
+          ],
+          "pos": {
+            "x": 6.88,
+            "y": 3.36,
+            "w": 5.14,
+            "h": 2.03
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        }
+      ]
+    },
+    {
+      "n": 7,
+      "title_guess": "结构体指针",
+      "notes": "当我们使用指针指向一个结构体时，访问成员的方式会有所不同。虽然我们可以使用解引用加点点操作符，但C语言提供了一种更简洁的方式——箭头操作符。记住这个规则：指向结构体的指针用箭头，普通结构体变量用点。",
+      "blocks": [
+        {
+          "text": "结构体指针",
+          "lines": [
+            "结构体指针"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 4.17,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "和普通变量一样，结构体变量在内存中也占有一块连续的存储空间，因此它也有地址，可以使用指针来指向这个地址。",
+          "lines": [
+            "和普通变量一样，结构体变量在内存中也占有一块连续的存储空间，因此它也有地址，可以使用指针来指向这个地址。"
+          ],
+          "pos": {
+            "x": 1.81,
+            "y": 1.92,
+            "w": 4.31,
+            "h": 0.75
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "指针访问成员的两种方式",
+          "lines": [
+            "指针访问成员的两种方式"
+          ],
+          "pos": {
+            "x": 1.81,
+            "y": 3.36,
+            "w": 4.31,
+            "h": 0.28
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "1. 解引用 + 点：(*ptr).member(需注意括号优先级)\n2. 箭头操作符：ptr->member(C语言推荐，写法更简洁)",
+          "lines": [
+            "1. 解引用 + 点：(*ptr).member(需注意括号优先级)",
+            "2. 箭头操作符：ptr->member(C语言推荐，写法更简洁)"
+          ],
+          "pos": {
+            "x": 1.81,
+            "y": 3.75,
+            "w": 4.31,
+            "h": 0.46
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "// 代码演示：两种方式等价",
+          "lines": [
+            "// 代码演示：两种方式等价"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 5.16,
+            "w": 5.0,
+            "h": 0.24
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "struct Point p = {10, 20}; \nstruct Point *ptr = &p;\n(*ptr).x = 100; // 方式一\nptr->y = 200; // 方式二 (更常用)",
+          "lines": [
+            "struct Point p = {10, 20}; ",
+            "struct Point *ptr = &p;\n(*ptr).x = 100; // 方式一\nptr->y = 200; // 方式二 (更常用)"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 5.56,
+            "w": 5.0,
+            "h": 0.81
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 8,
+      "title_guess": "PART 02",
+      "notes": "学会了结构体，我们就可以处理单个对象了。但如果要处理一组对象，比如一个班级的学生，我们就需要用到结构体数组。同时，为了简化代码，我们还会学习如何使用typedef来创建类型别名。",
+      "blocks": [
+        {
+          "text": "PART 02",
+          "lines": [
+            "PART 02"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 2.04,
+            "w": 13.33,
+            "h": 1.33
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "结构体数组与typedef",
+          "lines": [
+            "结构体数组与typedef"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 3.78,
+            "w": 13.33,
+            "h": 0.78
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "批量处理与类型别名",
+          "lines": [
+            "批量处理与类型别名"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 5.05,
+            "w": 13.33,
+            "h": 0.46
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 9,
+      "title_guess": "结构体数组",
+      "notes": "结构体数组的定义和普通数组非常相似。我们可以把它想象成一个对象的集合。比如，一个班级的学生信息就可以用一个结构体数组来表示。\n访问数组中的元素时，我们先用下标找到对应的结构体对象，然后再用点操作符访问其成员。",
+      "blocks": [
+        {
+          "text": "结构体数组",
+          "lines": [
+            "结构体数组"
+          ],
+          "pos": {
+            "x": 0.56,
+            "y": 0.73,
+            "w": 4.17,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "当我们需要处理一组相同类型的结构体时，就需要用到结构体数组。它将多个结构体对象有序地组织在一起，极大地方便了对批量数据的统一管理和高效访问。",
+          "lines": [
+            "当我们需要处理一组相同类型的结构体时，就需要用到结构体数组。它将多个结构体对象有序地组织在一起，极大地方便了对批量数据的统一管理和高效访问。"
+          ],
+          "pos": {
+            "x": 0.56,
+            "y": 1.75,
+            "w": 4.17,
+            "h": 1.12
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "核心概念：定义与初始化",
+          "lines": [
+            "核心概念：定义与初始化"
+          ],
+          "pos": {
+            "x": 0.56,
+            "y": 3.01,
+            "w": 4.44,
+            "h": 0.35
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "// 1. 定义结构体类型\nstruct Student{ \nchar name[20]; \nint id; \nfloat score; \n};\n// 2. 定义并初始化结构体数组 (3个学生)\nstruct Student class3[3]= {{\"张三\",2026001,92.5},\n{\"李四\",2026002,88.0},\n{\"王五\",2026003,95.0}};\n// 3. 访问数组元素的成员 (下标 + 点操作符)\nprintf(\"第一个学生：%s\", class3[0].name);",
+          "lines": [
+            "// 1. 定义结构体类型",
+            "struct Student{ ",
+            "char name[20]; ",
+            "int id; ",
+            "float score; ",
+            "};",
+            "// 2. 定义并初始化结构体数组 (3个学生)",
+            "struct Student class3[3]= {{\"张三\",2026001,92.5},",
+            "{\"李四\",2026002,88.0},",
+            "{\"王五\",2026003,95.0}};",
+            "// 3. 访问数组元素的成员 (下标 + 点操作符)",
+            "printf(\"第一个学生：%s\", class3[0].name);"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 4.1,
+            "w": 3.61,
+            "h": 3.08
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": [
+            "fullwidth_punct"
+          ]
+        },
+        {
+          "text": "可视化模型：多个结构体对象的集合",
+          "lines": [
+            "可视化模型：多个结构体对象的集合"
+          ],
+          "pos": {
+            "x": 7.22,
+            "y": 5.99,
+            "w": 5.0,
+            "h": 0.25
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "// 1. 定义结构体类型\nstruct Student{ \nchar name[20]; \nint id; \nfloat score; \n};\n// 2. 定义并初始化结构体数组 (3个学生)\nstruct Student class3[3]= {{\"张三\",2026001,92.5},\n{\"李四\",2026002,88.0},\n{\"王五\",2026003,95.0}};\n// 3. 访问数组元素的成员 (下标 + 点操作符)\nprintf(\"第一个学生：%s\", class3[0].name);",
+          "lines": [
+            "// 1. 定义结构体类型",
+            "struct Student{ ",
+            "char name[20]; ",
+            "int id; ",
+            "float score; ",
+            "};",
+            "// 2. 定义并初始化结构体数组 (3个学生)",
+            "struct Student class3[3]= {{\"张三\",2026001,92.5},",
+            "{\"李四\",2026002,88.0},",
+            "{\"王五\",2026003,95.0}};",
+            "// 3. 访问数组元素的成员 (下标 + 点操作符)",
+            "printf(\"第一个学生：%s\", class3[0].name);"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 4.1,
+            "w": 3.61,
+            "h": 3.08
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": [
+            "fullwidth_punct"
+          ]
+        }
+      ]
+    },
+    {
+      "n": 10,
+      "title_guess": "typedef：类型别名",
+      "notes": "每次都写“struct Student”是不是感觉有点啰嗦？typedef关键字就是来解决这个问题的。它可以为一个复杂的类型创建一个简短的别名。这样，我们就可以像使用int、float一样，直接用这个别名来定义变量，让代码更加简洁易读。",
+      "blocks": [
+        {
+          "text": "typedef：类型别名",
+          "lines": [
+            "typedef：类型别名"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 5.56,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "✦ 代码演示：结构体别名",
+          "lines": [
+            "✦ 代码演示：结构体别名"
+          ],
+          "pos": {
+            "x": 6.94,
+            "y": 1.81,
+            "w": 4.17,
+            "h": 0.28
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "C语言中的typedef关键字可以为一个已有的复杂类型（如结构体、数组等）创建一个简短的别名，从而让代码结构更清晰，书写更简洁。",
+          "lines": [
+            "C语言中的typedef关键字可以为一个已有的复杂类型（如结构体、数组等）创建一个简短的别名，从而让代码结构更清晰，书写更简洁。"
+          ],
+          "pos": {
+            "x": 1.81,
+            "y": 1.97,
+            "w": 4.31,
+            "h": 0.79
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "// 1. 定义一个基础结构体\nstruct Student { \nchar name[20]; \nint id;\nfloat score; \n};\n// 2. 使用 typedef 定义别名 (重点)\ntypedef struct  Student\n Student;\n// 3. 直接使用别名 Student 定义变量\nStudent s1;// 替代了 struct Student s1;\nStudent class3[3];// 定义结构体数组\nStudent p = &s1;// 定义结构体指针",
+          "lines": [
+            "// 1. 定义一个基础结构体",
+            "struct Student { ",
+            "char name[20]; ",
+            "int id;",
+            "float score; ",
+            "};",
+            "// 2. 使用 typedef 定义别名 (重点)",
+            "typedef struct  Student",
+            " Student;",
+            "// 3. 直接使用别名 Student 定义变量",
+            "Student s1;// 替代了 struct Student s1;",
+            "Student class3[3];// 定义结构体数组",
+            "Student p = &s1;// 定义结构体指针"
+          ],
+          "pos": {
+            "x": 6.94,
+            "y": 2.35,
+            "w": 5.14,
+            "h": 3.77
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "核心语法规则：\ntypedef 原类型名 新类型名;",
+          "lines": [
+            "核心语法规则：",
+            "typedef 原类型名 新类型名;"
+          ],
+          "pos": {
+            "x": 1.81,
+            "y": 3.66,
+            "w": 4.31,
+            "h": 0.6
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "通过 typedef 简化命名，就像给繁琐的类型“打包”，使用时直接引用别名即可。",
+          "lines": [
+            "通过 typedef 简化命名，就像给繁琐的类型“打包”，使用时直接引用别名即可。"
+          ],
+          "pos": {
+            "x": 3.19,
+            "y": 5.37,
+            "w": 2.36,
+            "h": 0.79
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "// 1. 定义一个基础结构体\nstruct Student { \nchar name[20]; \nint id;\nfloat score; \n};\n// 2. 使用 typedef 定义别名 (重点)\ntypedef struct  Student\n Student;\n// 3. 直接使用别名 Student 定义变量\nStudent s1;// 替代了 struct Student s1;\nStudent class3[3];// 定义结构体数组\nStudent p = &s1;// 定义结构体指针",
+          "lines": [
+            "// 1. 定义一个基础结构体",
+            "struct Student { ",
+            "char name[20]; ",
+            "int id;",
+            "float score; ",
+            "};",
+            "// 2. 使用 typedef 定义别名 (重点)",
+            "typedef struct  Student",
+            " Student;",
+            "// 3. 直接使用别名 Student 定义变量",
+            "Student s1;// 替代了 struct Student s1;",
+            "Student class3[3];// 定义结构体数组",
+            "Student p = &s1;// 定义结构体指针"
+          ],
+          "pos": {
+            "x": 6.94,
+            "y": 2.35,
+            "w": 5.14,
+            "h": 3.77
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        }
+      ]
+    },
+    {
+      "n": 11,
+      "title_guess": "C++ 的 using 别名",
+      "notes": "在C++中，我们有一个更现代的工具来创建类型别名，那就是using。它的语法更直观，就像给变量赋值一样。虽然在很多简单场景下它和typedef效果一样，但在处理更复杂的类型，比如模板时，using的优势就体现出来了。在现代C++编程中，我们更推荐使用using。",
+      "blocks": [
+        {
+          "text": "C++ 的 using 别名",
+          "lines": [
+            "C++ 的 using 别名"
+          ],
+          "pos": {
+            "x": 0.83,
+            "y": 0.66,
+            "w": 5.56,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "💻 代码实战：自定义结构体别名",
+          "lines": [
+            "💻 代码实战：自定义结构体别名"
+          ],
+          "pos": {
+            "x": 6.88,
+            "y": 1.8,
+            "w": 5.28,
+            "h": 0.29
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "更现代的类型别名",
+          "lines": [
+            "更现代的类型别名"
+          ],
+          "pos": {
+            "x": 1.6,
+            "y": 1.89,
+            "w": 4.58,
+            "h": 0.31
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "#include <iostream> \n#include <string>\nstruct Student{ \nstd::string name; \nint id; \nfloat score; \n};\n// 使用 using 定义别名 (核心操作)\nusing StuAlias = Student;\nint main() {\nStuAlias s = {\"Alice\", 2026004, 90.0f};\nstd::cout << s.name << std::endl;\nreturn0; \n}",
+          "lines": [
+            "#include <iostream> ",
+            "#include <string>",
+            "struct Student{ ",
+            "std::string name; ",
+            "int id; ",
+            "float score; ",
+            "};",
+            "// 使用 using 定义别名 (核心操作)",
+            "using StuAlias = Student;",
+            "int main() {",
+            "StuAlias s = {\"Alice\", 2026004, 90.0f};",
+            "std::cout << s.name << std::endl;",
+            "return0; ",
+            "}"
+          ],
+          "pos": {
+            "x": 6.88,
+            "y": 2.26,
+            "w": 5.28,
+            "h": 3.81
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "在 C++11 标准中引入，提供了一种比传统typedef更直观、功能更强大的类型别名声明方式。",
+          "lines": [
+            "在 C++11 标准中引入，提供了一种比传统typedef更直观、功能更强大的类型别名声明方式。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 2.39,
+            "w": 5.0,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "极简直观的语法结构",
+          "lines": [
+            "极简直观的语法结构"
+          ],
+          "pos": {
+            "x": 1.6,
+            "y": 3.42,
+            "w": 4.58,
+            "h": 0.31
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "using 新类型名 = 原类型名;\n类似变量赋值的语法，降低了理解门槛，语义清晰。",
+          "lines": [
+            "using 新类型名 = 原类型名;\n类似变量赋值的语法，降低了理解门槛，语义清晰。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 3.92,
+            "w": 5.0,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "现代 C++ 的首选方案",
+          "lines": [
+            "现代 C++ 的首选方案"
+          ],
+          "pos": {
+            "x": 1.6,
+            "y": 5.01,
+            "w": 4.58,
+            "h": 0.31
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "完美支持模板别名，解决了 typedef 的局限性。在现代 C++ 工程实践中，应优先使用 using。",
+          "lines": [
+            "完美支持模板别名，解决了 typedef 的局限性。在现代 C++ 工程实践中，应优先使用 using。"
+          ],
+          "pos": {
+            "x": 1.11,
+            "y": 5.59,
+            "w": 5.0,
+            "h": 0.49
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "#include <iostream> \n#include <string>\nstruct Student{ \nstd::string name; \nint id; \nfloat score; \n};\n// 使用 using 定义别名 (核心操作)\nusing StuAlias = Student;\nint main() {\nStuAlias s = {\"Alice\", 2026004, 90.0f};\nstd::cout << s.name << std::endl;\nreturn0; \n}",
+          "lines": [
+            "#include <iostream> ",
+            "#include <string>",
+            "struct Student{ ",
+            "std::string name; ",
+            "int id; ",
+            "float score; ",
+            "};",
+            "// 使用 using 定义别名 (核心操作)",
+            "using StuAlias = Student;",
+            "int main() {",
+            "StuAlias s = {\"Alice\", 2026004, 90.0f};",
+            "std::cout << s.name << std::endl;",
+            "return0; ",
+            "}"
+          ],
+          "pos": {
+            "x": 6.88,
+            "y": 2.26,
+            "w": 5.28,
+            "h": 3.81
+          },
+          "depth": 0,
+          "is_code": true,
+          "defects": []
+        }
+      ]
+    },
+    {
+      "n": 12,
+      "title_guess": "PART 03",
+      "notes": "接下来我们学习枚举类型。枚举的主要作用是定义一组命名的整数常量，它可以让我们的代码摆脱“魔法数字”，变得更加清晰易读。",
+      "blocks": [
+        {
+          "text": "PART 03",
+          "lines": [
+            "PART 03"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 2.25,
+            "w": 13.33,
+            "h": 1.19
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "枚举类型 (enum)",
+          "lines": [
+            "枚举类型 (enum)"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 3.92,
+            "w": 13.33,
+            "h": 0.78
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "定义命名常量",
+          "lines": [
+            "定义命名常量"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 5.05,
+            "w": 13.33,
+            "h": 0.46
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 13,
+      "title_guess": "// 定义颜色范围",
+      "notes": "那么，我们为什么要使用枚举呢？它的核心作用就是定义一组有明确范围的可选值。比如，一个函数需要接收颜色作为参数，如果我们用整数，可能会传入任何值，容易出错。但如果我们定义了一个颜色枚举，就把参数的取值范围限制在了红、绿、蓝这几个选项里，代码的可读性和安全性都大大提高了。",
+      "blocks": [
+        {
+          "text": "// 定义颜色范围\nenum Color { RED, \nGREEN, \nBLUE \n};\n// 函数参数被限制在Color类型范围内\nvoidsetColor(Color c) {\n// ... 执行设置颜色的操作\n}\nint main() {\nsetColor(RED);// 正确\n// setColor(5); // 编译错误，5不在Color范围内\nreturn0;\n}",
+          "lines": [
+            "// 定义颜色范围",
+            "enum Color { RED, ",
+            "GREEN, ",
+            "BLUE ",
+            "};",
+            "// 函数参数被限制在Color类型范围内",
+            "voidsetColor(Color c) {",
+            "// ... 执行设置颜色的操作",
+            "}",
+            "int main() {",
+            "setColor(RED);// 正确",
+            "// setColor(5); // 编译错误，5不在Color范围内",
+            "return0;",
+            "}"
+          ],
+          "pos": {
+            "x": 0.07,
+            "y": 0.0,
+            "w": 11.87,
+            "h": 5.12
+          },
+          "depth": 1,
+          "is_code": false
+        },
+        {
+          "text": "枚举类型的作用",
+          "lines": [
+            "枚举类型的作用"
+          ],
+          "pos": {
+            "x": 0.67,
+            "y": 0.56,
+            "w": 12.0,
+            "h": 0.56
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "枚举类型的核心作用是定义一组具有明确范围的可选值。它将程序中离散的、相关的常量组织在一起，形成一个逻辑集合，从而替代无意义的“魔法数字”，让代码更具可读性和健壮性。",
+          "lines": [
+            "枚举类型的核心作用是定义一组具有明确范围的可选值。它将程序中离散的、相关的常量组织在一起，形成一个逻辑集合，从而替代无意义的“魔法数字”，让代码更具可读性和健壮性。"
+          ],
+          "pos": {
+            "x": 0.67,
+            "y": 1.46,
+            "w": 12.0,
+            "h": 0.69
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "示例场景:一个函数需要接收一个表示颜色的参数。如果不使用枚举，可能会传入任意整数，导致错误。使用枚举后，可以将参数限制在RED, GREEN, BLUE这个明确的范围内，调用者可以判断出自己有哪些合法的选项。",
+          "lines": [
+            "示例场景:一个函数需要接收一个表示颜色的参数。如果不使用枚举，可能会传入任意整数，导致错误。使用枚举后，可以将参数限制在RED, GREEN, BLUE这个明确的范围内，调用者可以判断出自己有哪些合法的选项。"
+          ],
+          "pos": {
+            "x": 0.67,
+            "y": 2.26,
+            "w": 12.0,
+            "h": 0.62
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": []
+    },
+    {
+      "n": 14,
+      "title_guess": "C++ 的强类型枚举 (enum class)",
+      "notes": "传统的枚举有一些缺点，比如命名冲突和类型不安全。为了解决这些问题，C++11引入了强类型枚举，也就是enum class。它的成员必须通过作用域解析符来访问，并且不同的枚举类型之间不能随意转换，这使得我们的代码更加健壮和安全。在现代C++编程中，我们推荐优先使用enum class。",
+      "blocks": [
+        {
+          "text": "// 使用 enum class\nenum class Direction { Left, Right, Up, Down };\nenum class Color { Red, Green, Blue };\nint main() {\n// 必须使用 枚举名::成员名 的方式访问\nDirection dir = Direction::Left;\n// 以下代码会导致编译错误\n// Color c = Direction::Up;\n// int x = Direction::Right;\n// 需要显式转换才能赋值给整数\nint y = static_cast<int>(Direction::Right);\nreturn0;\n}",
+          "lines": [
+            "// 使用 enum class",
+            "enum class Direction { Left, Right, Up, Down };",
+            "enum class Color { Red, Green, Blue };",
+            "int main() {",
+            "// 必须使用 枚举名::成员名 的方式访问",
+            "Direction dir = Direction::Left;",
+            "// 以下代码会导致编译错误",
+            "// Color c = Direction::Up;",
+            "// int x = Direction::Right;",
+            "// 需要显式转换才能赋值给整数",
+            "int y = static_cast<int>(Direction::Right);",
+            "return0;",
+            "}"
+          ],
+          "pos": {
+            "x": 0.07,
+            "y": 0.0,
+            "w": 5.7,
+            "h": 4.98
+          },
+          "depth": 1,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "C++ 的强类型枚举 (enum class)",
+          "lines": [
+            "C++ 的强类型枚举 (enum class)"
+          ],
+          "pos": {
+            "x": 0.67,
+            "y": 0.6,
+            "w": 12.0,
+            "h": 0.46
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "为了解决传统 enum 的作用域污染和类型不安全问题，C++11 引入了强类型枚举（enum class）。",
+          "lines": [
+            "为了解决传统 enum 的作用域污染和类型不安全问题，C++11 引入了强类型枚举（enum class）。"
+          ],
+          "pos": {
+            "x": 0.67,
+            "y": 1.53,
+            "w": 12.0,
+            "h": 0.28
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "• 作用域隔离（先选类别采选具体选项）\n成员被包含在枚举类的作用域内，必须通过 :: 访问，避免了命名冲突。\n• 类型安全（不混淆）\n枚举类的实例不能与其他枚举类型或整数隐式转换，提供了更好的类型检查。",
+          "lines": [
+            "• 作用域隔离（先选类别采选具体选项）",
+            "成员被包含在枚举类的作用域内，必须通过 :: 访问，避免了命名冲突。",
+            "• 类型安全（不混淆）",
+            "枚举类的实例不能与其他枚举类型或整数隐式转换，提供了更好的类型检查。"
+          ],
+          "pos": {
+            "x": 0.26,
+            "y": 2.43,
+            "w": 6.24,
+            "h": 1.26
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "总结：在 C++ 中，推荐优先使用 enum class，因为它更安全、更规范。\n避免不同类别的枚举直接互相污染。",
+          "lines": [
+            "总结：在 C++ 中，推荐优先使用 enum class，因为它更安全、更规范。",
+            "避免不同类别的枚举直接互相污染。"
+          ],
+          "pos": {
+            "x": 0.43,
+            "y": 5.64,
+            "w": 6.24,
+            "h": 0.63
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "// 使用 enum class\nenum class Direction { Left, Right, Up, Down };\nenum class Color { Red, Green, Blue };\nint main() {\n// 必须使用 枚举名::成员名 的方式访问\nDirection dir = Direction::Left;\n// 以下代码会导致编译错误\n// Color c = Direction::Up;\n// int x = Direction::Right;\n// 需要显式转换才能赋值给整数\nint y = static_cast<int>(Direction::Right);\nreturn0;\n}",
+          "lines": [
+            "// 使用 enum class",
+            "enum class Direction { Left, Right, Up, Down };",
+            "enum class Color { Red, Green, Blue };",
+            "int main() {",
+            "// 必须使用 枚举名::成员名 的方式访问",
+            "Direction dir = Direction::Left;",
+            "// 以下代码会导致编译错误",
+            "// Color c = Direction::Up;",
+            "// int x = Direction::Right;",
+            "// 需要显式转换才能赋值给整数",
+            "int y = static_cast<int>(Direction::Right);",
+            "return0;",
+            "}"
+          ],
+          "pos": {
+            "x": 0.07,
+            "y": 0.0,
+            "w": 5.7,
+            "h": 4.98
+          },
+          "depth": 1,
+          "is_code": true,
+          "defects": []
+        }
+      ]
+    },
+    {
+      "n": 15,
+      "title_guess": "联合体 (union)：内存共享的特殊类型",
+      "notes": "最后我们来了解联合体。联合体和结构体很像，但核心区别在于它的所有成员共享同一块内存。这意味着它的大小等于最大成员的大小。虽然节省了内存，但也带来了一个限制：同一时刻只有一个成员是有效的。修改一个成员会覆盖其他成员的值。联合体主要用于节省内存或者在底层进行数据类型的解析。",
+      "blocks": [
+        {
+          "text": "联合体 (union)：内存共享的特殊类型",
+          "lines": [
+            "联合体 (union)：内存共享的特殊类型"
+          ],
+          "pos": {
+            "x": 0.56,
+            "y": 0.47,
+            "w": 12.22,
+            "h": 0.46
+          },
+          "depth": 0,
+          "is_code": false
+        },
+        {
+          "text": "#include <stdio.h>\nunion Data {\nint i;\nfloat f;\nchar c[4];\n};\nint main() {\nunion Data data;\n// 给成员 i 赋值\ndata.i = 0x41424344;\nprintf(\"data.i = %d\\\\n\", data.i);\n// 以浮点数形式解释同一块内存\nprintf(\"data.f = %f\\\\n\", data.f);\n// 以字符数组形式解释同一块内存\nprintf(\"data.c = %c%c%c%c\\\\n\", data.c[0], data.c[1], data.c[2], data.c[3]);\nreturn 0;\n}",
+          "lines": [
+            "#include <stdio.h>",
+            "union Data {",
+            "int i;",
+            "float f;",
+            "char c[4];",
+            "};",
+            "int main() {",
+            "union Data data;",
+            "// 给成员 i 赋值",
+            "data.i = 0x41424344;",
+            "printf(\"data.i = %d\\\\n\", data.i);",
+            "// 以浮点数形式解释同一块内存",
+            "printf(\"data.f = %f\\\\n\", data.f);",
+            "// 以字符数组形式解释同一块内存",
+            "printf(\"data.c = %c%c%c%c\\\\n\", data.c[0], data.c[1], data.c[2], data.c[3]);",
+            "return 0;",
+            "}"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 0.59,
+            "w": 6.11,
+            "h": 4.38
+          },
+          "depth": 1,
+          "is_code": true,
+          "defects": []
+        },
+        {
+          "text": "原理介绍\n•核心原理：联合体是一种特殊的自定义类型，它的所有成员共享同一块内存空间。\n•大小：联合体的大小等于其最大成员的大小。\n•关键点：在同一时刻，联合体只有一个成员是“有效”的。修改一个成员的值会覆盖其他成员的值。\n用途介绍\n•节省内存：当几个数据项在程序的不同阶段使用，且不会同时被使用时，可以用联合体来节省内存。\n•数据类型转换/解析：常用于底层编程，用来解析不同类型的数据。例如，在网络编程中解析接收到的二进制数据。\n总结：不同身高的人，合用一条裤子，省得分别买多条裤子。",
+          "lines": [
+            "原理介绍",
+            "•核心原理：联合体是一种特殊的自定义类型，它的所有成员共享同一块内存空间。",
+            "•大小：联合体的大小等于其最大成员的大小。",
+            "•关键点：在同一时刻，联合体只有一个成员是“有效”的。修改一个成员的值会覆盖其他成员的值。",
+            "用途介绍",
+            "•节省内存：当几个数据项在程序的不同阶段使用，且不会同时被使用时，可以用联合体来节省内存。",
+            "•数据类型转换/解析：常用于底层编程，用来解析不同类型的数据。例如，在网络编程中解析接收到的二进制数据。",
+            "总结：不同身高的人，合用一条裤子，省得分别买多条裤子。"
+          ],
+          "pos": {
+            "x": 0.56,
+            "y": 1.41,
+            "w": 5.83,
+            "h": 5.24
+          },
+          "depth": 0,
+          "is_code": false
+        }
+      ],
+      "code_blocks": [
+        {
+          "text": "#include <stdio.h>\nunion Data {\nint i;\nfloat f;\nchar c[4];\n};\nint main() {\nunion Data data;\n// 给成员 i 赋值\ndata.i = 0x41424344;\nprintf(\"data.i = %d\\\\n\", data.i);\n// 以浮点数形式解释同一块内存\nprintf(\"data.f = %f\\\\n\", data.f);\n// 以字符数组形式解释同一块内存\nprintf(\"data.c = %c%c%c%c\\\\n\", data.c[0], data.c[1], data.c[2], data.c[3]);\nreturn 0;\n}",
+          "lines": [
+            "#include <stdio.h>",
+            "union Data {",
+            "int i;",
+            "float f;",
+            "char c[4];",
+            "};",
+            "int main() {",
+            "union Data data;",
+            "// 给成员 i 赋值",
+            "data.i = 0x41424344;",
+            "printf(\"data.i = %d\\\\n\", data.i);",
+            "// 以浮点数形式解释同一块内存",
+            "printf(\"data.f = %f\\\\n\", data.f);",
+            "// 以字符数组形式解释同一块内存",
+            "printf(\"data.c = %c%c%c%c\\\\n\", data.c[0], data.c[1], data.c[2], data.c[3]);",
+            "return 0;",
+            "}"
+          ],
+          "pos": {
+            "x": 0.0,
+            "y": 0.59,
+            "w": 6.11,
+            "h": 4.38
+          },
+          "depth": 1,
+          "is_code": true,
+          "defects": []
+        }
+      ]
+    }
+  ]
+}

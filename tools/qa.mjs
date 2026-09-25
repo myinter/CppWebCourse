@@ -18,7 +18,11 @@ import { setTimeout as sleep } from 'node:timers/promises';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const BASE = process.env.BASE || 'http://localhost:8000';
 const OUT = 'tools/qa-out';
-const PORT = 9333;
+// 每次用一个随机端口 + 独立 profile：固定端口时，上一次没退干净的
+// Chrome 会占着端口，于是新进程起不来、脚本却连上了那个残留实例的旧页面，
+// 表现就是偶发的 "Cannot read properties of undefined (reading 'go')"
+const PORT = 9300 + Math.floor(Math.random() * 500);
+const PROFILE = `/tmp/qa-chrome-${PORT}`;
 
 mkdirSync(OUT, { recursive: true });
 
@@ -70,7 +74,7 @@ async function launch() {
     '--disable-gpu', '--no-sandbox',
     '--hide-scrollbars',
     '--window-size=1440,900',
-    '--user-data-dir=/tmp/qa-chrome-profile',
+    `--user-data-dir=${PROFILE}`,
     'about:blank'
   ], { stdio: 'ignore' });
 
@@ -83,7 +87,9 @@ async function launch() {
     await sleep(250);
   }
   const list = await (await fetch(`http://127.0.0.1:${PORT}/json/list`)).json();
-  const page = list.find(t => t.type === 'page');
+  // 明确挑 about:blank 那个标签，别拿到残留页
+  const page = list.find(t => t.type === 'page' && /^about:blank/.test(t.url || ''))
+            || list.find(t => t.type === 'page');
   const ws = new WebSocket(page.webSocketDebuggerUrl);
   await new Promise((res, rej) => {
     ws.addEventListener('open', res, { once: true });
