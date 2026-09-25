@@ -27,9 +27,9 @@
       label: '第 1 章',
       title: '数据类型与变量常量',
       subtitle: '数据在内存里长什么样',
-      desc: '比特与字节、基本数据类型、变量的本质、常量、sizeof 与类型转换。',
+      desc: '比特与字节、基本数据类型、变量的本质、常量、sizeof、类型转换，以及字节序与 IEEE 754 浮点数表示。',
       icon: 'memory',
-      slides: 22,
+      slides: 27,
       topics: ['数据的本质', '基本数据类型', '变量与常量', '类型转换'],
       file: 'assets/data/ch1.js'
     },
@@ -123,9 +123,9 @@
       label: '第 9 章',
       title: 'Modern C++ 新特性',
       subtitle: '从 C++11 到 C++20',
-      desc: 'C++11 的核心特性彻底讲透，C++14/17/20 的重要更新逐个概览。',
+      desc: 'C++11 的核心特性彻底讲透（含 lambda 的本质），C++14/17/20 的重要更新逐个概览。',
       icon: 'cpp11',
-      slides: 37,
+      slides: 38,
       topics: ['auto 与范围 for', 'lambda 与智能指针', '移动语义', 'C++14/17/20 概览'],
       file: 'assets/data/ch9.js'
     }

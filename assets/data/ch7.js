@@ -654,7 +654,7 @@ sizeof(Status) = 1 字节`,
             caption: '写 u.i = 65。这 4 个字节被写入整数 65 的二进制形式：最低位字节是 65，其余是 0。',
             regions: [
               { name: 'union 的内存（只有 4 字节）', kind: 'stack', cells: [
-                { id: 'u', label: 'u.i = 65', type: '', value: '01 00 00 00（小端）', addr: '0x7ffd9c4a2ba0', state: 'changed' }
+                { id: 'u', label: 'u.i = 65（低字节在前）', type: '', value: '01 00 00 00', addr: '0x7ffd9c4a2ba0', state: 'changed' }
               ]}
             ]
           },

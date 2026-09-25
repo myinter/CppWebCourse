@@ -1,11 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <!-- C/C++ 教程的标识：六边形 + C + 两个加号（与站内 icons.js 的 cpp 图标同款几何） -->
+  <!-- C/C++ 教程的标识：六边形 + C + 两个加号。
+       几何与站内 icons.js 的 cpp 图标同源；标签页里只有 16px，
+       描边比站内略粗，免得两条笔画糊在一起。 -->
   <rect width="32" height="32" rx="7" fill="#0a0e14"/>
-  <g transform="translate(4 4)" fill="none" stroke="#5b9dff" stroke-width="2.1"
+  <g transform="translate(4 4)" fill="none" stroke="#5b9dff" stroke-width="1.9"
      stroke-linecap="round" stroke-linejoin="round">
     <path d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Z"/>
-    <path d="M8.2 9.3A2.9 2.9 0 1 0 8.2 14.7"/>
-    <path d="M11.5 10.2h4.2M13.6 8.1v4.2"/>
-    <path d="M15.4 13.4h3.6M17.2 11.6v3.6"/>
+    <path d="M7.05 9.6A2.4 2.4 0 1 0 7.05 14.4"/>
+    <path d="M10.25 12h4M12.25 10v4"/>
+    <path d="M15.35 12h4M17.35 10v4"/>
   </g>
 </svg>

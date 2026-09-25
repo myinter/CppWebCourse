@@ -233,7 +233,7 @@ int main() {
         '**捕获列表**写方括号里，可以为空 `[]`',
         '返回值通常自动推导，不用写',
         '配合 `sort`、`count_if` 这类算法极其方便',
-        '本质是一个匿名的函数对象'
+        '本质是一个**匿名的类** —— 后面会把它拆开看'
       ],
       code: {
         file: 'lambda_basic.cpp',
@@ -314,6 +314,72 @@ int main() {
         }
       },
       notes: '这个是本章最重要的提示之一。值捕获 vs 引用捕获的区别，是 lambda 最常用也最容易出错的地方。特别注意最后那个陷阱：如果 lambda 被存起来延迟执行，而它引用捕获的局部变量已经销毁了，就会出问题。'
+    },
+
+    /* ---------- lambda 的本质 ---------- */
+    {
+      type: 'code',
+      eyebrow: '特性 3 · 补',
+      title: 'lambda 的本质：编译器替你写了个匿名结构体',
+      lead: '`lambda` 的身世比看上去朴素：它是一个**匿名的类** —— 捕获的变量成了它的数据成员，函数体成了它的 `operator()`。',
+      code: {
+        file: 'lambda_essence.cpp',
+        source: `#include <iostream>
+#include <type_traits>
+
+// 先手写一个"和 lambda 等价"的类：
+// 捕获的变量 = 数据成员，函数体 = operator()
+struct AddN {
+    int n;
+    int operator()(int x) const { return x + n; }
+};
+
+int main() {
+    // 1. 没有捕获：闭包里没有任何成员，是个空类
+    auto f = [](int x) { return x * 2; };
+    std::cout << "无捕获 lambda 的大小: " << sizeof(f) << " 字节" << std::endl;
+
+    // 2. 捕获谁，闭包里就多一个与之等大的成员
+    int a = 10;
+    auto g = [a](int x) { return x + a; };
+    std::cout << "捕获 1 个 int 后:     " << sizeof(g) << " 字节" << std::endl;
+
+    int b = 20;
+    auto h = [a, b](int x) { return x + a + b; };
+    std::cout << "捕获 2 个 int 后:     " << sizeof(h) << " 字节" << std::endl;
+
+    // 3. 没有捕获时，还能退化成普通函数指针
+    int (*fp)(int) = f;
+    std::cout << "转成函数指针调用:     " << fp(21) << std::endl;
+
+    // 4. 手写的类，和捕获了 n 的 lambda 完全等价
+    int n = 10;
+    auto lam = [n](int x) { return x + n; };
+    AddN hand{n};
+    std::cout << "手写类: " << hand(5) << "   lambda: " << lam(5) << std::endl;
+
+    // 5. 每个 lambda 都是独一无二的类型，所以只能用 auto 接
+    auto f1 = [](int x) { return x; };
+    auto f2 = [](int x) { return x; };
+    std::cout << "两个一样的 lambda，类型相同吗? "
+              << std::is_same<decltype(f1), decltype(f2)>::value << std::endl;
+
+    return 0;
+}`,
+        expectedOutput: `无捕获 lambda 的大小: 1 字节
+捕获 1 个 int 后:     4 字节
+捕获 2 个 int 后:     8 字节
+转成函数指针调用:     42
+手写类: 15   lambda: 15
+两个一样的 lambda，类型相同吗? 0`,
+        note: {
+          kind: 'note',
+          icon: 'bulb',
+          title: '三条可以直接验证的推论',
+          text: '**一、闭包的大小 = 被捕获的变量之和。** 没有捕获就是空类，`sizeof` 是 1（空类也占 1 字节，才能保证每个对象有唯一地址）；捕获一个 `int` 就变 4 字节 —— 这正是一个结构体该有的行为。\n\n**二、无捕获的 lambda 能退化成函数指针。** 因为它身上没有任何状态。这正是它能把 lambda 直接传给 C 接口（比如 `qsort`）的原因。\n\n**三、一旦有捕获，就转不成函数指针了。** 函数指针没有地方存放那个成员，标准直接禁止。编译器给的原话是：`no viable conversion from (lambda at ...) to int (*)(int)`。\n\n顺带解开一个疑惑：**为什么必须用 `auto` 接 lambda？** 因为每个 lambda 表达式的类型都是编译器现场造出来的、独一无二的匿名类型 —— 两个写法一模一样的 lambda，类型也不同（上面的输出是 0），你根本无从写出它的类型名。'
+        }
+      },
+      notes: '这一页是 lambda 的"掀盖子"。讲法建议：先问学生"lambda 到底是个什么东西"，再说"它就是一个类"。三个可验证的点——sizeof 跟着捕获走、无捕获能转函数指针、每个 lambda 类型都不同——都在一段代码里跑出来了，让学生自己改改捕获列表再看 sizeof 变化，印象最深。理解了这一层，后面看 std::function、看"按值捕获的对象是 const 的"这类规则就都不再需要死记。'
     },
 
     /* ---------- 10. nullptr ---------- */

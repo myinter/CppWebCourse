@@ -49,6 +49,36 @@
     return n;
   }
 
+  /**
+   * 一段文字占几"格"（等宽字体的列数）。
+   * 一个汉字约等于两个西文字符宽，按字符个数算会低估一半 ——
+   * 「一块内存，两个视角」数出来是 9，实际占 18 格，于是撑出盒子。
+   */
+  function textCols(s) {
+    var n = 0;
+    for (var i = 0; i < s.length; i++) {
+      var c = s.charCodeAt(i);
+      var wide = c >= 0x1100 && (
+        c <= 0x115f || c === 0x2329 || c === 0x232a ||
+        (c >= 0x2e80 && c <= 0xa4cf && c !== 0x303f) ||
+        (c >= 0xac00 && c <= 0xd7a3) ||
+        (c >= 0xf900 && c <= 0xfaff) ||
+        (c >= 0xfe30 && c <= 0xfe6f) ||
+        (c >= 0xff00 && c <= 0xff60) ||
+        (c >= 0xffe0 && c <= 0xffe6)
+      );
+      n += wide ? 2 : 1;
+    }
+    return n;
+  }
+
+  /** 在 available 宽度内塞下这段文字的字号（等宽字体按 0.6em 估） */
+  function fitSize(text, available, maxSize, minSize) {
+    var cols = Math.max(textCols(text), 1);
+    var size = Math.floor(available / (cols * 0.6));
+    return Math.max(minSize, Math.min(maxSize, size));
+  }
+
   /* ============================================================
      布局：算出每个区域的高度、每个格子的坐标
      ============================================================ */
@@ -158,17 +188,21 @@
     // 用 || 会把它当成缺失而回退到 id，于是空白格子会显示成 a/b/c/d
     var label = (c.label != null) ? c.label : c.id;
     var nameText = c.type ? label + '  ' + c.type : label;
-    g.appendChild(el('text', {
+    var nameEl = el('text', {
       x: b.x + 11, y: b.y + 19, class: 'mem-cell-name'
-    }, nameText));
+    }, nameText);
+    // 名字也可能是长的（「i 和 f 共用这 4 字节」），同样要缩
+    var nSize = fitSize(nameText, b.w - 24, 11, 9);
+    if (nSize !== 11) nameEl.style.fontSize = nSize + 'px';
+    g.appendChild(nameEl);
 
     // 值（居中偏下，字号最大，是整个图的视觉重点）
-    // 字号随内容长度自适应：一个完整的 64 位地址是 14 个字符
-    // （0x7ffd9c4a2ba0），按 17px 会捅出盒子右边、压到隔壁格子上。
-    // 用 style 而不是 font-size 属性 —— SVG 的表现属性优先级最低，
-    // 会被 .mem-cell-value 这条 CSS 规则盖掉，那样算了也白算。
+    // 字号随内容长度自适应：一个完整的 64 位地址是 14 格
+    // （0x7ffd9c4a2ba0），一段中文注释更长 —— 不缩就会捅出盒子右边、
+    // 压到隔壁格子上。用 style 而不是 font-size 属性 —— SVG 的表现
+    // 属性优先级最低，会被 .mem-cell-value 这条 CSS 规则盖掉，算了也白算。
     var vtext = c.value == null ? '' : String(c.value);
-    var vSize = Math.max(11, Math.min(17, Math.floor(180 / Math.max(vtext.length, 1))));
+    var vSize = fitSize(vtext, b.w - 24, 17, 9);
     var valueEl = el('text', {
       x: b.x + 11, y: b.y + 41, class: 'mem-cell-value'
     }, vtext);
